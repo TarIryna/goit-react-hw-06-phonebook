@@ -2,20 +2,13 @@ import { useState } from 'react';
 import s from './Form.module.css';
 import { connect } from 'react-redux';
 import contactsActions from '../../redux/contacts/contacts-actions';
-import Notiflix from 'notiflix';
 
-const Form = ({ onSubmit, items }) => {
+const Form = ({ onSubmit }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const onSubmitForm = e => {
     e.preventDefault();
-    const findName = items.find(contact => contact.name === name);
-    if (findName) {
-      Notiflix.Notify.failure(`${findName.name} is already in contacts`);
-      reset();
-      return;
-    }
     onSubmit(name, number);
     reset();
   };
@@ -75,11 +68,8 @@ const Form = ({ onSubmit, items }) => {
   );
 };
 
-const mapStateToProps = ({ contacts: { items } }) => ({
-  items,
-});
 const mapDispatchToProps = dispatch => ({
   onSubmit: (name, number) => dispatch(contactsActions.addContact(name, number)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default connect(null, mapDispatchToProps)(Form);
